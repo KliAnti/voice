@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="8.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <ProjectReference Include="../voice/voice.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="Exists('../../test-framework/src/TestFramework/TestFramework.csproj')">
+    <ProjectReference Include="../../contracts/Contracts.Voice/Contracts.Voice.csproj" />
+    <ProjectReference Include="../../test-framework/src/TestFramework/TestFramework.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="!Exists('../../test-framework/src/TestFramework/TestFramework.csproj')">
+    <PackageReference Include="Contracts.Voice" Version="0.1.3" />
+    <PackageReference Include="TestFramework" Version="0.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+</Project>
