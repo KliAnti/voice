@@ -34,7 +34,7 @@ public sealed class PingEndpointTests(VoiceApiFixture fixture)
     public async Task Ping_WhenCalled_LogsIncomingMessage()
     {
         // Arrange
-        await fixture.ResetAsync();
+        fixture.Logger.Invocations.Clear();
         const string message = "log me";
 
         // Act
