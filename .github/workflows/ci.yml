@@ -1,0 +1,41 @@
+name: Voice Service CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Authenticate GitHub Packages
+        env:
+          USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget update source github \
+            --source "https://nuget.pkg.github.com/KliAnti/index.json" \
+            --username "$USERNAME" \
+            --password "$TOKEN" \
+            --store-password-in-clear-text
+
+      - name: Restore
+        run: dotnet restore voice.slnx
+
+      - name: Build
+        run: dotnet build voice.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test voice.slnx --configuration Release --no-build --no-restore --verbosity normal
